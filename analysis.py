@@ -31,14 +31,15 @@ who = who.reset_index()
 
 st.title('GAWS analysis')
 
-st.subheader('1. # of providers per 100,00 people (per capita)')
+st.header('1. # of providers per 100,00 people (per capita)')
 
 ###########################################
 st.markdown("""
-In general, the results are as expected
-- More providers now than before
-- Across categories
-    - especially indented
+There are some significant discrepancies between the old 2015 data and the new ones. These will have to be validated, particularly for extreme changes.
+
+- Some countries have reported a many-fold increase in providers and providers per capita
+- Some have show a significant decrease
+
 """
 )
 col1, col2 = st.columns(2)
@@ -59,7 +60,7 @@ st.write('#### Raw data of absolute and per capita provider numbers')
 st.dataframe(provnumbers)
 
 ###########################################
-st.subheader('2. % of providers that are women')
+st.header('2. % of providers that are women')
 
 col1, col2 = st.columns(2)
 with col1:
