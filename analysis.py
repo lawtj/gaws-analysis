@@ -13,7 +13,9 @@ df = pd.read_csv('analysis.csv')
 #Group for individual country analysis
 dfg = df.groupby(['country','Region']).mean()
 dfg = dfg.reset_index()
-provnumbers = dfg[['country', 'totalpap','totalpap_cap', 'totalnpap','totalnpap_cap', 'totalproviders', 'totalproviders_cap']].round(0)
+provnumbers = dfg[['country','Region', 'totalpap','totalpap_cap', 'totalnpap','totalnpap_cap', 'totalproviders', 'totalproviders_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']]
+#provnumbers.to_csv('provider numbers.csv')
+
 
 #Group by World Bank income group
 wbc = df.groupby('wbincome').mean()
@@ -32,6 +34,13 @@ st.title('GAWS analysis')
 st.subheader('1. # of providers per 100,00 people (per capita)')
 
 ###########################################
+st.markdown("""
+In general, the results are as expected
+- More providers now than before
+- Across categories
+    - especially indented
+"""
+)
 col1, col2 = st.columns(2)
 with col1:
     st.write('#### number of providers by World Bank Income Group')
@@ -69,23 +78,43 @@ with col2:
 ###########################################
 ########### comparison to previous GAWS
 
-st.header('Comparison to previous GAWS')
+st.header('3. Comparison of PAPs to previous GAWS')
+st.subheader('Raw data to compare, current vs 2015 GAWS')
+provnumbers
 st.write('This compares the current GAWS per capita numbers vs the GAWS per capita numbers in 2015. A number greater than 1 indicates increase by x% (eg. 1.5 is a 1.5x increase, or 150%). A number less than 1 indicates a decrease. ')
 
 dfg=dfg.sort_values(by='physiciancap_diff')
 
+## use t3 for grouped bar graphs
+t3 = dfg[['country', 'Region','totalpap_cap', 'physicians2015_cap']]
+t3= t3.melt(id_vars=['Region','country'])
+
 ######europe
 st.write('#### European Region')
+
+
+fig = px.bar(x=t3[t3['Region']=='European Region']['country'], y=t3[t3['Region']=='European Region']['value'], color=t3[t3['Region']=='European Region']['variable'], barmode='group')
+fig.update_xaxes(categoryorder='total descending')
+
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 with col1:
+    st.write('% difference from last survey')
     fig = px.bar(x=dfg[dfg['Region']=='European Region']['country'], y=dfg[dfg['Region']=='European Region']['physiciancap_diff'])
     st.plotly_chart(fig)
 
 with col2:
-    dfg[dfg['Region']=='European Region'][['country', 'totalpap_cap', 'physicians2015', 'physiciancap_diff']]
+    dfg[dfg['Region']=='European Region'][['country','totalpap', 'totalpap_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']]
 
 #########africa
 st.write('#### African Region')
+
+fig = px.bar(x=t3[t3['Region']=='African Region']['country'], y=t3[t3['Region']=='African Region']['value'], color=t3[t3['Region']=='African Region']['variable'], barmode='group')
+fig.update_xaxes(categoryorder='total descending')
+
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 with col1:
     fig = px.bar(x=dfg[dfg['Region']=='African Region']['country'], y=dfg[dfg['Region']=='African Region']['physiciancap_diff'])
@@ -93,43 +122,67 @@ with col1:
     st.caption('Tanzania is a clear outlier, with almost 26x growth since 2015?')
 
 with col2:
-    dfg[dfg['Region']=='African Region'][['country', 'totalpap_cap', 'physicians2015', 'physiciancap_diff']]
+    dfg[dfg['Region']=='African Region'][['country','totalpap', 'totalpap_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']]
 
 ############ americas
 st.write('#### Americas Region')
+
+fig = px.bar(x=t3[t3['Region']=='Region of the Americas']['country'], y=t3[t3['Region']=='Region of the Americas']['value'], color=t3[t3['Region']=='Region of the Americas']['variable'], barmode='group')
+fig.update_xaxes(categoryorder='total descending')
+
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 with col1:
     fig = px.bar(x=dfg[dfg['Region']=='Region of the Americas']['country'], y=dfg[dfg['Region']=='Region of the Americas']['physiciancap_diff'])
     st.plotly_chart(fig)
 
 with col2:
-    dfg[dfg['Region']=='Region of the Americas'][['country', 'totalpap_cap', 'physicians2015', 'physiciancap_diff']]
+    dfg[dfg['Region']=='Region of the Americas'][['country','totalpap', 'totalpap_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']]
 
 ########## EMRO
 st.write('#### Eastern Mediterranean Region')
+
+fig = px.bar(x=t3[t3['Region']=='Eastern Mediterranean Region']['country'], y=t3[t3['Region']=='Eastern Mediterranean Region']['value'], color=t3[t3['Region']=='Eastern Mediterranean Region']['variable'], barmode='group')
+fig.update_xaxes(categoryorder='total descending')
+
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 with col1:
     fig = px.bar(x=dfg[dfg['Region']=='Eastern Mediterranean Region']['country'], y=dfg[dfg['Region']=='Eastern Mediterranean Region']['physiciancap_diff'])
     st.plotly_chart(fig)
 
 with col2:
-    st.dataframe(dfg[dfg['Region']=='Eastern Mediterranean Region'][['country', 'totalpap_cap', 'physicians2015', 'physiciancap_diff']])
+    st.dataframe(dfg[dfg['Region']=='Eastern Mediterranean Region'][['country','totalpap', 'totalpap_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']])
 
 ########## SEASIA
 st.write('#### South-East Asia Region')
+
+fig = px.bar(x=t3[t3['Region']=='South-East Asia Region']['country'], y=t3[t3['Region']=='South-East Asia Region']['value'], color=t3[t3['Region']=='South-East Asia Region']['variable'], barmode='group')
+fig.update_xaxes(categoryorder='total descending')
+
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 with col1:
     fig = px.bar(x=dfg[dfg['Region']=='South-East Asia Region']['country'], y=dfg[dfg['Region']=='South-East Asia Region']['physiciancap_diff'])
     st.plotly_chart(fig)
 
 with col2:
-    st.dataframe(dfg[dfg['Region']=='South-East Asia Region'][['country', 'totalpap_cap', 'physicians2015', 'physiciancap_diff']])
+    st.dataframe(dfg[dfg['Region']=='South-East Asia Region'][['country','totalpap', 'totalpap_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']])
 
 st.write('#### Western Pacific Region')
+
+fig = px.bar(x=t3[t3['Region']=='Western Pacific Region']['country'], y=t3[t3['Region']=='Western Pacific Region']['value'], color=t3[t3['Region']=='Western Pacific Region']['variable'], barmode='group')
+fig.update_xaxes(categoryorder='total descending')
+
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 with col1:
     fig = px.bar(x=dfg[dfg['Region']=='Western Pacific Region']['country'], y=dfg[dfg['Region']=='Western Pacific Region']['physiciancap_diff'])
     st.plotly_chart(fig)
 
 with col2:
-    st.dataframe(dfg[dfg['Region']=='Western Pacific Region'][['country', 'totalpap_cap', 'physicians2015', 'physiciancap_diff']])
+    st.dataframe(dfg[dfg['Region']=='Western Pacific Region'][['country','totalpap', 'totalpap_cap','physicians2015', 'physicians2015_cap', 'physiciancap_diff']])
