@@ -34,24 +34,45 @@ st.title('GAWS analysis')
 st.header('1. # of providers per 100,00 people (per capita)')
 
 ###########################################
-st.markdown("""
-There are some significant discrepancies between the old 2015 data and the new ones. These will have to be validated, particularly for extreme changes.
+left, right = st.columns(2)
 
-- Some countries have reported a many-fold increase in providers and providers per capita
-- Some have show a significant decrease
+with left:
+    st.markdown("""
+    There are some significant discrepancies between the old 2015 data and the new ones. These will have to be validated, particularly for extreme changes.
 
-"""
-)
+    - Some countries have reported a many-fold increase in providers and providers per capita
+    - Some have show a significant decrease
+
+    """
+    )
+
+with right:
+    st.markdown("""
+
+    **Table legend**
+    - Country
+    - Region
+    - ***totalpap***: total physician providers
+    - ***totalpap_cap***: total physician providers per capita
+    - ***totalnpap***: total NPAPs
+    - ***totalnpap_cap***: total NPAPs per capita
+    - ***totalproviders***: sum of total PAP and total NPAP
+    - ***totalproviders_cap***: total # of providers (PAP & NPAP) per capita
+    - ***physicians2015***: total physician providers from 2015 GAWS
+    - ***physicians2015_cap***: total physician providers per capita from 2015 GAWS
+    - ***physiciancap_diff***: total physician providers per capita / total physician providers per capita from 2015
+    """)
+
 col1, col2 = st.columns(2)
 with col1:
     st.write('#### number of providers by World Bank Income Group')
-    fig = px.bar(wbc, x='wbincome', y=['totalpap_cap', 'totalnpap_cap'], barmode='group')
+    fig = px.bar(wbc, x='wbincome', y=['totalpap_cap', 'totalnpap_cap'], barmode='group', text_auto=True)
     fig.update_xaxes(categoryorder='total descending')
     st.plotly_chart(fig)
 
 with col2:
     st.write('#### providers by WHO Group')
-    fig = px.bar(who, x='Region', y=['totalpap_cap', 'totalnpap_cap'], barmode='group')
+    fig = px.bar(who, x='Region', y=['totalpap_cap', 'totalnpap_cap'], barmode='group', text_auto=True)
     fig.update_xaxes(categoryorder='total descending')
     st.plotly_chart(fig)
 
@@ -65,13 +86,13 @@ st.header('2. % of providers that are women')
 col1, col2 = st.columns(2)
 with col1:
     st.write('#### % providers who are women, by World Bank Income Group')
-    fig = px.bar(wbc, x='wbincome', y=['totalpap_gender', 'totalnpap_gender'], barmode='group')
+    fig = px.bar(wbc, x='wbincome', y=['totalpap_gender', 'totalnpap_gender'], barmode='group', text_auto=True)
     fig.update_xaxes(categoryorder='total descending')
     st.plotly_chart(fig)
 
 with col2:
     st.write('#### % providers who are women, by WHO Group')
-    fig = px.bar(who, x='Region', y=['totalpap_gender', 'totalnpap_gender'], barmode='group')
+    fig = px.bar(who, x='Region', y=['totalpap_gender', 'totalnpap_gender'], barmode='group', text_auto=True)
     fig.update_xaxes(categoryorder='total descending')
     st.plotly_chart(fig)
     st.caption('Blue = Physicians, Orange = nonphysicisans')
@@ -94,7 +115,7 @@ t3= t3.melt(id_vars=['Region','country'])
 st.write('#### European Region')
 
 
-fig = px.bar(x=t3[t3['Region']=='European Region']['country'], y=t3[t3['Region']=='European Region']['value'], color=t3[t3['Region']=='European Region']['variable'], barmode='group')
+fig = px.bar(x=t3[t3['Region']=='European Region']['country'], y=t3[t3['Region']=='European Region']['value'], color=t3[t3['Region']=='European Region']['variable'], barmode='group', text_auto=True)
 fig.update_xaxes(categoryorder='total descending')
 
 st.plotly_chart(fig, use_container_width=True)
@@ -102,7 +123,7 @@ st.plotly_chart(fig, use_container_width=True)
 col1, col2 = st.columns(2)
 with col1:
     st.write('% difference from last survey')
-    fig = px.bar(x=dfg[dfg['Region']=='European Region']['country'], y=dfg[dfg['Region']=='European Region']['physiciancap_diff'])
+    fig = px.bar(x=dfg[dfg['Region']=='European Region']['country'], y=dfg[dfg['Region']=='European Region']['physiciancap_diff'], text_auto=True)
     st.plotly_chart(fig)
 
 with col2:
@@ -111,14 +132,14 @@ with col2:
 #########africa
 st.write('#### African Region')
 
-fig = px.bar(x=t3[t3['Region']=='African Region']['country'], y=t3[t3['Region']=='African Region']['value'], color=t3[t3['Region']=='African Region']['variable'], barmode='group')
+fig = px.bar(x=t3[t3['Region']=='African Region']['country'], y=t3[t3['Region']=='African Region']['value'], color=t3[t3['Region']=='African Region']['variable'], barmode='group', text_auto=True)
 fig.update_xaxes(categoryorder='total descending')
 
 st.plotly_chart(fig, use_container_width=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(x=dfg[dfg['Region']=='African Region']['country'], y=dfg[dfg['Region']=='African Region']['physiciancap_diff'])
+    fig = px.bar(x=dfg[dfg['Region']=='African Region']['country'], y=dfg[dfg['Region']=='African Region']['physiciancap_diff'], text_auto=True)
     st.plotly_chart(fig)
     st.caption('Tanzania is a clear outlier, with almost 26x growth since 2015?')
 
@@ -128,14 +149,14 @@ with col2:
 ############ americas
 st.write('#### Americas Region')
 
-fig = px.bar(x=t3[t3['Region']=='Region of the Americas']['country'], y=t3[t3['Region']=='Region of the Americas']['value'], color=t3[t3['Region']=='Region of the Americas']['variable'], barmode='group')
+fig = px.bar(x=t3[t3['Region']=='Region of the Americas']['country'], y=t3[t3['Region']=='Region of the Americas']['value'], color=t3[t3['Region']=='Region of the Americas']['variable'], barmode='group', text_auto=True)
 fig.update_xaxes(categoryorder='total descending')
 
 st.plotly_chart(fig, use_container_width=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(x=dfg[dfg['Region']=='Region of the Americas']['country'], y=dfg[dfg['Region']=='Region of the Americas']['physiciancap_diff'])
+    fig = px.bar(x=dfg[dfg['Region']=='Region of the Americas']['country'], y=dfg[dfg['Region']=='Region of the Americas']['physiciancap_diff'], text_auto=True)
     st.plotly_chart(fig)
 
 with col2:
@@ -144,14 +165,14 @@ with col2:
 ########## EMRO
 st.write('#### Eastern Mediterranean Region')
 
-fig = px.bar(x=t3[t3['Region']=='Eastern Mediterranean Region']['country'], y=t3[t3['Region']=='Eastern Mediterranean Region']['value'], color=t3[t3['Region']=='Eastern Mediterranean Region']['variable'], barmode='group')
+fig = px.bar(x=t3[t3['Region']=='Eastern Mediterranean Region']['country'], y=t3[t3['Region']=='Eastern Mediterranean Region']['value'], color=t3[t3['Region']=='Eastern Mediterranean Region']['variable'], barmode='group', text_auto=True)
 fig.update_xaxes(categoryorder='total descending')
 
 st.plotly_chart(fig, use_container_width=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(x=dfg[dfg['Region']=='Eastern Mediterranean Region']['country'], y=dfg[dfg['Region']=='Eastern Mediterranean Region']['physiciancap_diff'])
+    fig = px.bar(x=dfg[dfg['Region']=='Eastern Mediterranean Region']['country'], y=dfg[dfg['Region']=='Eastern Mediterranean Region']['physiciancap_diff'], text_auto=True)
     st.plotly_chart(fig)
 
 with col2:
@@ -160,14 +181,14 @@ with col2:
 ########## SEASIA
 st.write('#### South-East Asia Region')
 
-fig = px.bar(x=t3[t3['Region']=='South-East Asia Region']['country'], y=t3[t3['Region']=='South-East Asia Region']['value'], color=t3[t3['Region']=='South-East Asia Region']['variable'], barmode='group')
+fig = px.bar(x=t3[t3['Region']=='South-East Asia Region']['country'], y=t3[t3['Region']=='South-East Asia Region']['value'], color=t3[t3['Region']=='South-East Asia Region']['variable'], barmode='group', text_auto=True)
 fig.update_xaxes(categoryorder='total descending')
 
 st.plotly_chart(fig, use_container_width=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(x=dfg[dfg['Region']=='South-East Asia Region']['country'], y=dfg[dfg['Region']=='South-East Asia Region']['physiciancap_diff'])
+    fig = px.bar(x=dfg[dfg['Region']=='South-East Asia Region']['country'], y=dfg[dfg['Region']=='South-East Asia Region']['physiciancap_diff'], text_auto=True)
     st.plotly_chart(fig)
 
 with col2:
@@ -175,14 +196,14 @@ with col2:
 
 st.write('#### Western Pacific Region')
 
-fig = px.bar(x=t3[t3['Region']=='Western Pacific Region']['country'], y=t3[t3['Region']=='Western Pacific Region']['value'], color=t3[t3['Region']=='Western Pacific Region']['variable'], barmode='group')
+fig = px.bar(x=t3[t3['Region']=='Western Pacific Region']['country'], y=t3[t3['Region']=='Western Pacific Region']['value'], color=t3[t3['Region']=='Western Pacific Region']['variable'], barmode='group', text_auto=True)
 fig.update_xaxes(categoryorder='total descending')
 
 st.plotly_chart(fig, use_container_width=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(x=dfg[dfg['Region']=='Western Pacific Region']['country'], y=dfg[dfg['Region']=='Western Pacific Region']['physiciancap_diff'])
+    fig = px.bar(x=dfg[dfg['Region']=='Western Pacific Region']['country'], y=dfg[dfg['Region']=='Western Pacific Region']['physiciancap_diff'], text_auto=True)
     st.plotly_chart(fig)
 
 with col2:
